@@ -45,6 +45,8 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
     dangerouslyAllowBrowser: true // Allow browser-side calls
   });
 
+  const hasApiKey = !!import.meta.env.VITE_FEATHERLESS_API_KEY;
+
   const initialGreeting: Message = {
     id: 'msg-0',
     sender: 'ai',
@@ -84,6 +86,11 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
     setIsTyping(true);
 
     try {
+      // Only call API if key is available
+      if (!hasApiKey) {
+        throw new Error('API key not configured');
+      }
+
       // Prepare context for the AI
       const context = language === 'hi'
         ? `तुम एक क्रेडनोवा एआई वित्तीय सलाहकार हो। उपयोगकर्ता का नाम: ${profile.nameHindi || profile.fullName}, वैकल्पिक क्रेडिट स्कोर: ${scoring.score} (${scoring.riskCategory}), मासिक औसत आय: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, बिल भुगतान स्ट्रीक: ${profile.utilityPaymentStreakMonths} महीने, आपातकालीन बफर: ${profile.emergencySavingsBufferDays} दिन। दो भाषाओं में उत्तर दें: पहले हिंदी में, फिर अंग्रेजी में।`
@@ -115,6 +122,23 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
       setMessages(prev => [...prev, aiMsg]);
     } catch (error) {
       console.error('AI API Error:', error);
+
+      // Show API key not configured message
+      if (!hasApiKey) {
+        const aiMsg: Message = {
+          id: `ai-${Date.now()}`,
+          sender: 'ai',
+          text: language === 'hi'
+            ? 'कृपया FEATHERLESS_API_KEY वातावरण चर सेट करें। featherless.ai से मुफ्त API कुंजी प्राप्त करें।'
+            : 'Please set FEATHERLESS_API_KEY environment variable. Get a free API key from featherless.ai',
+          tips: language === 'hi'
+            ? ['API key कैसे सेट करें', 'अभी पंजीकरण करें']
+            : ['How to set API key', 'Sign up now']
+        };
+        setMessages(prev => [...prev, aiMsg]);
+        setIsTyping(false);
+        return;
+      }
 
       // Fallback to hardcoded responses if API fails
       let replyText = '';

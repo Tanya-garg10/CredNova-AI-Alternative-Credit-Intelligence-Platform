@@ -51,7 +51,7 @@
 3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
    ```bash
-   FEATHERLESS_API_KEY="your_featherless_api_key_here"
+   VITE_FEATHERLESS_API_KEY="your_featherless_api_key_here"
    ```
 
 4. **Run the development server**
@@ -67,6 +67,19 @@
 npm run build
 npm run preview
 ```
+
+## 🌐 Deployment
+
+### Vercel
+1. Connect your GitHub repository to Vercel
+2. Add environment variable: `VITE_FEATHERLESS_API_KEY`
+3. Deploy automatically on push
+
+### Netlify
+1. Connect your GitHub repository to Netlify
+2. Add environment variable: `VITE_FEATHERLESS_API_KEY`
+3. Build command: `npm run build`
+4. Publish directory: `dist`
 
 ## 📁 Project Structure
 

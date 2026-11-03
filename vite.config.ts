@@ -23,6 +23,9 @@ export default defineConfig(() => {
       rollupOptions: {
         external: ['react-is'],
       },
+      // Ensure assets are properly served
+      assetsDir: 'assets',
     },
+    base: '/',
   };
 });
