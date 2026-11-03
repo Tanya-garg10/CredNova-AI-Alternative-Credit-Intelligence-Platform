@@ -20,9 +20,7 @@ export default defineConfig(() => {
     },
     build: {
       // Use legacy Rollup instead of new Rolldown for better compatibility
-      rollupOptions: {
-        external: ['react-is'],
-      },
+      // Removed externalizing 'react-is' to let Vite bundle it correctly
       // Ensure assets are properly served
       assetsDir: 'assets',
     },
