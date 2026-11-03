@@ -1,9 +1,12 @@
 <div align="center">
   <h1>🏦 CredNova AI - Alternative Credit Intelligence Platform</h1>
   <p>AI-powered alternative credit scoring for unbanked individuals, rural communities, and gig workers</p>
-  ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-  ![Node](https://img.shields.io/badge/node-18+-green.svg)
-  ![React](https://img.shields.io/badge/react-19+-blue.svg)
+</div>
+
+<div align="center">
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Node](https://img.shields.io/badge/node-18+-green.svg)
+![React](https://img.shields.io/badge/react-19+-blue.svg)
 </div>
 
 ## 🌟 Features
