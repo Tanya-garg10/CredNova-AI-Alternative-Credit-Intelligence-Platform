@@ -25,7 +25,7 @@
 
 - **Frontend**: React 19, TypeScript, Tailwind CSS 4
 - **3D Visualization**: Three.js
-- **AI Integration**: Featherless AI (Llama 3.3 70B)
+- **AI Integration**: Hugging Face (Llama 3.3 70B)
 - **Charts**: Recharts
 - **Build Tool**: Vite 8
 
@@ -33,7 +33,7 @@
 
 - Node.js 18 or higher
 - npm or bun
-- Featherless API key (get free at [featherless.ai](https://featherless.ai))
+- Hugging Face API key (get free at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens))
 
 ## 🔧 Installation
 
@@ -51,7 +51,7 @@
 3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
    ```bash
-   VITE_FEATHERLESS_API_KEY="your_featherless_api_key_here"
+   VITE_HUGGINGFACE_API_KEY="your_huggingface_api_key_here"
    ```
 
 4. **Run the development server**
@@ -72,12 +72,12 @@ npm run preview
 
 ### Vercel
 1. Connect your GitHub repository to Vercel
-2. Add environment variable: `VITE_FEATHERLESS_API_KEY`
+2. Add environment variable: `VITE_HUGGINGFACE_API_KEY`
 3. Deploy automatically on push
 
 ### Netlify
 1. Connect your GitHub repository to Netlify
-2. Add environment variable: `VITE_FEATHERLESS_API_KEY`
+2. Add environment variable: `VITE_HUGGINGFACE_API_KEY`
 3. Build command: `npm run build`
 4. Publish directory: `dist`
 
@@ -108,5 +108,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Featherless AI for providing affordable AI inference
+- Hugging Face for providing free AI inference
 - Open-source community for amazing tools and libraries

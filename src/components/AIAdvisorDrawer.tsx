@@ -38,14 +38,14 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
 }) => {
   const t = translations[language];
 
-  // Initialize OpenAI client for Featherless
+  // Initialize OpenAI client for Hugging Face (optional)
   const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_FEATHERLESS_API_KEY || '',
-    baseURL: 'https://api.featherless.ai/v1',
+    apiKey: import.meta.env.VITE_HUGGINGFACE_API_KEY || '',
+    baseURL: 'https://api-inference.huggingface.co/v1',
     dangerouslyAllowBrowser: true // Allow browser-side calls
   });
 
-  const hasApiKey = !!import.meta.env.VITE_FEATHERLESS_API_KEY;
+  const hasApiKey = !!import.meta.env.VITE_HUGGINGFACE_API_KEY && import.meta.env.VITE_HUGGINGFACE_API_KEY !== 'MY_HUGGINGFACE_API_KEY';
 
   const initialGreeting: Message = {
     id: 'msg-0',
@@ -87,58 +87,41 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
 
     try {
       // Only call API if key is available
-      if (!hasApiKey) {
-        throw new Error('API key not configured');
+      if (hasApiKey) {
+        // Prepare context for the AI
+        const context = language === 'hi'
+          ? `तुम एक क्रेडनोवा एआई वित्तीय सलाहकार हो। उपयोगकर्ता का नाम: ${profile.nameHindi || profile.fullName}, वैकल्पिक क्रेडिट स्कोर: ${scoring.score} (${scoring.riskCategory}), मासिक औसत आय: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, बिल भुगतान स्ट्रीक: ${profile.utilityPaymentStreakMonths} महीने, आपातकालीन बफर: ${profile.emergencySavingsBufferDays} दिन। दो भाषाओं में उत्तर दें: पहले हिंदी में, फिर अंग्रेजी में।`
+          : `You are a CredNova AI Financial Coach. User name: ${profile.fullName}, Alternative Credit Score: ${scoring.score} (${scoring.riskCategory}), Monthly Average Income: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, Utility Payment Streak: ${profile.utilityPaymentStreakMonths} months, Emergency Buffer: ${profile.emergencySavingsBufferDays} days. Provide helpful, actionable financial advice in ${language === 'hi' ? 'Hindi and English' : 'English'}.`;
+
+        const completion = await openai.chat.completions.create({
+          model: 'meta-llama/Llama-3.3-70B-Instruct',
+          messages: [
+            { role: 'system', content: context },
+            { role: 'user', content: userQuery }
+          ],
+          max_tokens: 500,
+          temperature: 0.7
+        });
+
+        const aiResponse = completion.choices[0]?.message?.content;
+
+        if (aiResponse) {
+          const aiMsg: Message = {
+            id: `ai-${Date.now()}`,
+            sender: 'ai',
+            text: aiResponse,
+            tips: language === 'hi'
+              ? ['90-दिवसीय कार्ययोजना दिखाएं', 'मुझे कितनी ऋण राशि सिमुलेट करनी चाहिए?']
+              : ['Show 90-day checklist', 'What loan amount should I simulate?']
+          };
+
+          setMessages(prev => [...prev, aiMsg]);
+          return;
+        }
       }
-
-      // Prepare context for the AI
-      const context = language === 'hi'
-        ? `तुम एक क्रेडनोवा एआई वित्तीय सलाहकार हो। उपयोगकर्ता का नाम: ${profile.nameHindi || profile.fullName}, वैकल्पिक क्रेडिट स्कोर: ${scoring.score} (${scoring.riskCategory}), मासिक औसत आय: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, बिल भुगतान स्ट्रीक: ${profile.utilityPaymentStreakMonths} महीने, आपातकालीन बफर: ${profile.emergencySavingsBufferDays} दिन। दो भाषाओं में उत्तर दें: पहले हिंदी में, फिर अंग्रेजी में।`
-        : `You are a CredNova AI Financial Coach. User name: ${profile.fullName}, Alternative Credit Score: ${scoring.score} (${scoring.riskCategory}), Monthly Average Income: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, Utility Payment Streak: ${profile.utilityPaymentStreakMonths} months, Emergency Buffer: ${profile.emergencySavingsBufferDays} days. Provide helpful, actionable financial advice in ${language === 'hi' ? 'Hindi and English' : 'English'}.`;
-
-      const completion = await openai.chat.completions.create({
-        model: 'MiniMaxAI/MiniMax-M3.1-Flash',
-        messages: [
-          { role: 'system', content: context },
-          { role: 'user', content: userQuery }
-        ],
-        max_tokens: 500,
-        temperature: 0.7
-      });
-
-      const aiResponse = completion.choices[0]?.message?.content || language === 'hi'
-        ? 'मुझे खेद है, मैं अभी उत्तर नहीं दे पा रहा हूँ। कृपया बाद में पुनः प्रयास करें।'
-        : 'Sorry, I cannot provide a response right now. Please try again later.';
-
-      const aiMsg: Message = {
-        id: `ai-${Date.now()}`,
-        sender: 'ai',
-        text: aiResponse,
-        tips: language === 'hi'
-          ? ['90-दिवसीय कार्ययोजना दिखाएं', 'मुझे कितनी ऋण राशि सिमुलेट करनी चाहिए?']
-          : ['Show 90-day checklist', 'What loan amount should I simulate?']
-      };
-
-      setMessages(prev => [...prev, aiMsg]);
     } catch (error) {
       console.error('AI API Error:', error);
-
-      // Show API key not configured message
-      if (!hasApiKey) {
-        const aiMsg: Message = {
-          id: `ai-${Date.now()}`,
-          sender: 'ai',
-          text: language === 'hi'
-            ? 'कृपया FEATHERLESS_API_KEY वातावरण चर सेट करें। featherless.ai से मुफ्त API कुंजी प्राप्त करें।'
-            : 'Please set FEATHERLESS_API_KEY environment variable. Get a free API key from featherless.ai',
-          tips: language === 'hi'
-            ? ['API key कैसे सेट करें', 'अभी पंजीकरण करें']
-            : ['How to set API key', 'Sign up now']
-        };
-        setMessages(prev => [...prev, aiMsg]);
-        setIsTyping(false);
-        return;
-      }
+    }
 
       // Fallback to hardcoded responses if API fails
       let replyText = '';
