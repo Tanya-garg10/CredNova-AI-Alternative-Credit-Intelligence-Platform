@@ -155,6 +155,95 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
       replyTips = language === 'hi'
         ? ['आपातकालीन बफर कैसे बनाएं', 'मेरे स्कोर कारक समझाएं']
         : ['How to build emergency buffer', 'Explain my score factors'];
+    } else if (q.includes('micro-savings') || q.includes('savings') || q.includes('save') || q.includes('बचत')) {
+      replyText = language === 'hi'
+        ? `माइक्रो-बचत विकल्प जो आपके क्रेडिट स्कोर को बढ़ाते हैं:
+1. यूपीआई ऑटो-पे: ₹100-₹200 साप्ताहिक स्वचालित बचत
+2. जीरो-बैलेंस खाते: फिनटेक ऐप्स पर ब्याज-अर्जित बचत
+3. मोबाइल वॉलेट: पेटीएम/फोनपे पर राउंड-अप बचत
+4. समिति चक्र: पारंपरिक ROSCA आधारित बचत`
+        : `Micro-savings options that boost your credit score:
+1. UPI Auto-Pay: Set up ₹100-₹200 weekly automated savings
+2. Zero-balance accounts: Interest-earning savings on fintech apps
+3. Mobile wallets: Round-up savings on Paytm/PhonePe
+4. Chit funds/ROSCA: Traditional group-based savings cycles`;
+      replyTips = language === 'hi'
+        ? ['आपातकालीन बफर कैसे बनाएं', 'मेरी ऋण सीमा क्या है?']
+        : ['How to build emergency buffer', 'What is my loan eligibility limit?'];
+    } else if (q.includes('checklist') || q.includes('90-day') || q.includes('90 day') || q.includes('कार्ययोजना')) {
+      replyText = language === 'hi'
+        ? `📋 90-दिवसीय क्रेडिट बिल्डअप योजना:
+
+दिन 1-30: नींव
+✅ सभी बिल 3 दिन पहले भरें
+✅ यूपीआई लेनदेन सक्रिय रखें
+✅ ₹200 साप्ताहिक बचत शुरू करें
+
+दिन 31-60: गति
+✅ बिल भुगतान स्ट्रीक बनाए रखें
+✅ डिजिटल वॉलेट बैलेंस बढ़ाएं
+✅ एक छोटा ऋण लें और समय पर चुकाएं
+
+दिन 61-90: विस्तार
+✅ आपातकालीन बफर 45 दिन तक बढ़ाएं
+✅ क्रेडिट पासपोर्ट डाउनलोड करें
+✅ बड़े ऋण के लिए आवेदन करें`
+        : `📋 90-Day Credit Buildup Plan:
+
+Days 1-30: Foundation
+✅ Pay all bills 3 days early
+✅ Keep UPI transactions active
+✅ Start ₹200 weekly savings
+
+Days 31-60: Momentum
+✅ Maintain bill payment streak
+✅ Increase digital wallet balance
+✅ Take a small loan and repay on time
+
+Days 61-90: Expansion
+✅ Build emergency buffer to 45 days
+✅ Download credit passport
+✅ Apply for larger loans`;
+      replyTips = language === 'hi'
+        ? ['मेरी ऋण सीमा क्या है?', 'क्रेडिट पासपोर्ट कैसे डाउनलोड करें']
+        : ['What is my loan eligibility limit?', 'How to download my credit passport'];
+    } else if (q.includes('loan') || q.includes('simulate') || q.includes('amount') || q.includes('ऋण') || q.includes('राशि')) {
+      const loanAmount = Math.round(profile.monthlyAverageIncome * 3);
+      replyText = language === 'hi'
+        ? `आपकी ${scoring.score} स्कोर और ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}/माह आय के आधार पर, आप लगभग ₹${loanAmount.toLocaleString('en-IN')} तक का ऋण प्राप्त कर सकते हैं।
+
+ऋण विकल्प:
+- व्यक्तिगत ऋण: ₹${Math.round(loanAmount * 0.6).toLocaleString('en-IN')}
+- व्यापार ऋण: ₹${Math.round(loanAmount * 0.8).toLocaleString('en-IN')}
+- आपातकालीन ऋण: ₹${Math.round(loanAmount * 0.4).toLocaleString('en-IN')}`
+        : `Based on your ${scoring.score} score and ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}/mo income, you're eligible for approximately ₹${loanAmount.toLocaleString('en-IN')}.
+
+Loan options:
+- Personal loan: ₹${Math.round(loanAmount * 0.6).toLocaleString('en-IN')}
+- Business loan: ₹${Math.round(loanAmount * 0.8).toLocaleString('en-IN')}
+- Emergency loan: ₹${Math.round(loanAmount * 0.4).toLocaleString('en-IN')}`;
+      replyTips = language === 'hi'
+        ? ['ब्याज दरें क्या हैं?', 'ऋण कैसे आवेदन करें?']
+        : ['What are the interest rates?', 'How to apply for a loan?'];
+    } else if (q.includes('upi') || q.includes('lender') || q.includes('receipts') || q.includes('लेंडर')) {
+      replyText = language === 'hi'
+        ? `ऋणदाता आपके यूपीआई रिकॉर्ड को इस प्रकार देखते हैं:
+✅ लेनदेन की नियमितता - सप्ताह में 5+ लेनदेन
+✅ भुगतान की समयबद्धता - देरी से भुगतान नहीं
+✅ व्यापारिक स्थिरता - समान व्यापारियों से नियमित खरीद
+✅ बचत पैटर्न - नियमित बचत लेनदेन
+
+यह डेटा आपकी वित्तीय अनुशासन का प्रमाण है!`
+        : `Lenders view your UPI records as follows:
+✅ Transaction frequency - 5+ transactions weekly
+✅ Payment punctuality - no late payments
+✅ Merchant stability - regular purchases from same vendors
+✅ Savings patterns - consistent saving transactions
+
+This data proves your financial discipline!`;
+      replyTips = language === 'hi'
+        ? ['मेरा यूपीआई स्कोर क्या है?', 'स्कोर कैसे सुधारें?']
+        : ['What is my UPI score?', 'How to improve score?'];
     } else {
       replyText = language === 'hi'
         ? `बहुत अच्छा प्रश्न! बैंक-विहीन और गिग श्रमिकों के लिए, छोटे नियमित कदम—जैसे मोबाइल बिल 3 दिन पहले भरना और डिजिटल यूपीआई लेनदेन सक्रिय रखना—सीधे आपके वैकल्पिक क्रेडिट स्कोर को बढ़ाते हैं। क्या आप 90-दिवसीय कार्ययोजना देखना चाहेंगे?`
