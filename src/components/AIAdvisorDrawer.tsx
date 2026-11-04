@@ -14,6 +14,26 @@ import { BorrowerProfile, ScoringResult } from '../types';
 import { Language, translations } from '../i18n/translations';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Simple markdown parser for basic formatting
+const parseMarkdown = (text: string) => {
+  let parsed = text;
+  // Bold text **text** or __text__
+  parsed = parsed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  parsed = parsed.replace(/__(.*?)__/g, '<strong>$1</strong>');
+  // Italic text *text* or _text_
+  parsed = parsed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  parsed = parsed.replace(/_(.*?)_/g, '<em>$1</em>');
+  // Headers ### Header
+  parsed = parsed.replace(/^### (.*$)/gm, '<strong>$1</strong>');
+  parsed = parsed.replace(/^## (.*$)/gm, '<strong>$1</strong>');
+  parsed = parsed.replace(/^# (.*$)/gm, '<strong>$1</strong>');
+  // Bullet points
+  parsed = parsed.replace(/^[\-\*] (.*$)/gm, '• $1');
+  // Numbered lists
+  parsed = parsed.replace(/^\d+\. (.*$)/gm, '$1.');
+  return parsed;
+};
+
 interface AIAdvisorDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -295,7 +315,10 @@ This data proves your financial discipline!`;
                   : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-bl-none shadow-md'
               }`}
             >
-              <p className="whitespace-pre-line">{msg.text}</p>
+              <p
+                className="whitespace-pre-line"
+                dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.text) }}
+              />
             </div>
 
             {/* Quick action suggestion chips from AI */}
