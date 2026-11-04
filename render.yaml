@@ -4,6 +4,7 @@ services:
     env: static
     buildCommand: npm install && npm run build
     publishDir: dist
+    startCommand: npm run preview
     envVars:
       - key: VITE_GEMINI_API_KEY
         sync: false
