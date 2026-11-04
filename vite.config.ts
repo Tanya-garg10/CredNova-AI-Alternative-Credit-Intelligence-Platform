@@ -25,5 +25,8 @@ export default defineConfig(() => {
       assetsDir: 'assets',
     },
     base: '/',
+    preview: {
+      allowedHosts: ['all'],
+    },
   };
 });
