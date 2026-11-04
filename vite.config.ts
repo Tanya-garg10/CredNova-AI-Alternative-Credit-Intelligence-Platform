@@ -26,7 +26,7 @@ export default defineConfig(() => {
     },
     base: '/',
     preview: {
-      allowedHosts: ['all', 'crednova-ai-alternative-credit.onrender.com'],
+      allowedHosts: ['.onrender.com'],
     },
   };
 });
