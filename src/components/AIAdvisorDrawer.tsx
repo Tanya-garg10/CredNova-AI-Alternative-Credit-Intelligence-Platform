@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { BorrowerProfile, ScoringResult } from '../types';
 import { Language, translations } from '../i18n/translations';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 interface AIAdvisorDrawerProps {
   isOpen: boolean;
@@ -38,14 +38,11 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
 }) => {
   const t = translations[language];
 
-  // Initialize OpenAI client for Hugging Face (optional)
-  const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_HUGGINGFACE_API_KEY || '',
-    baseURL: 'https://api-inference.huggingface.co/v1',
-    dangerouslyAllowBrowser: true // Allow browser-side calls
-  });
+  // Initialize Gemini AI client
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY || '');
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-  const hasApiKey = !!import.meta.env.VITE_HUGGINGFACE_API_KEY && import.meta.env.VITE_HUGGINGFACE_API_KEY !== 'MY_HUGGINGFACE_API_KEY';
+  const hasApiKey = !!import.meta.env.VITE_GEMINI_API_KEY && import.meta.env.VITE_GEMINI_API_KEY !== 'MY_GEMINI_API_KEY';
 
   const initialGreeting: Message = {
     id: 'msg-0',
@@ -93,17 +90,10 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
           ? `तुम एक क्रेडनोवा एआई वित्तीय सलाहकार हो। उपयोगकर्ता का नाम: ${profile.nameHindi || profile.fullName}, वैकल्पिक क्रेडिट स्कोर: ${scoring.score} (${scoring.riskCategory}), मासिक औसत आय: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, बिल भुगतान स्ट्रीक: ${profile.utilityPaymentStreakMonths} महीने, आपातकालीन बफर: ${profile.emergencySavingsBufferDays} दिन। दो भाषाओं में उत्तर दें: पहले हिंदी में, फिर अंग्रेजी में।`
           : `You are a CredNova AI Financial Coach. User name: ${profile.fullName}, Alternative Credit Score: ${scoring.score} (${scoring.riskCategory}), Monthly Average Income: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, Utility Payment Streak: ${profile.utilityPaymentStreakMonths} months, Emergency Buffer: ${profile.emergencySavingsBufferDays} days. Provide helpful, actionable financial advice in ${language === 'hi' ? 'Hindi and English' : 'English'}.`;
 
-        const completion = await openai.chat.completions.create({
-          model: 'meta-llama/Llama-3.3-70B-Instruct',
-          messages: [
-            { role: 'system', content: context },
-            { role: 'user', content: userQuery }
-          ],
-          max_tokens: 500,
-          temperature: 0.7
-        });
+        const prompt = `${context}\n\nUser question: ${userQuery}`;
 
-        const aiResponse = completion.choices[0]?.message?.content;
+        const result = await model.generateContent(prompt);
+        const aiResponse = result.response.text();
 
         if (aiResponse) {
           const aiMsg: Message = {
