@@ -123,58 +123,56 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
       console.error('AI API Error:', error);
     }
 
-      // Fallback to hardcoded responses if API fails
-      let replyText = '';
-      let replyTips: string[] | undefined;
+    // Fallback to hardcoded responses if API fails or no key
+    let replyText = '';
+    let replyTips: string[] | undefined;
 
-      const q = userQuery.toLowerCase();
-      if (q.includes('750') || q.includes('increase') || q.includes('improve') || q.includes('स्कोर') || q.includes('सुधार')) {
-        replyText = language === 'hi'
-          ? `आपकी ऑडिटेड प्रोफ़ाइल के अनुसार, आप 90 दिनों में +45 से +60 अंक प्राप्त कर सकते हैं:
+    const q = userQuery.toLowerCase();
+    if (q.includes('750') || q.includes('increase') || q.includes('improve') || q.includes('स्कोर') || q.includes('सुधार')) {
+      replyText = language === 'hi'
+        ? `आपकी ऑडिटेड प्रोफ़ाइल के अनुसार, आप 90 दिनों में +45 से +60 अंक प्राप्त कर सकते हैं:
 1. अपनी ${profile.utilityPaymentStreakMonths}-महीने की बिल भुगतान श्रृंखला जारी रखें (प्रत्येक समय पर रिचार्ज +12 अंक जोड़ता है)।
 2. ₹300-₹500 प्रति सप्ताह की माइक्रो-बचत शुरू करके अपने आपातकालीन बफर को ${profile.emergencySavingsBufferDays} दिनों से बढ़ाकर 45 दिन करें।
 3. अपने ऋण-से-आय (DTI) अनुपात को 20% से नीचे रखें।`
-          : `Based on your audited profile, you can gain +45 to +60 points within 90 days by:
+        : `Based on your audited profile, you can gain +45 to +60 points within 90 days by:
 1. Maintaining your ${profile.utilityPaymentStreakMonths}-month utility streak (every on-time recharge adds +12 pts).
 2. Automating a micro-deposit of ₹300-₹500 weekly to stretch your emergency cash cushion from ${profile.emergencySavingsBufferDays} days towards 45 days.
 3. Keeping your debt-to-income ratio strictly below 20%.`;
-        replyTips = language === 'hi'
-          ? ['माइक्रो-बचत विकल्पों के बारे में बताएं', 'ऋणदाता मेरे यूपीआई रिकॉर्ड को कैसे देखते हैं']
-          : ['Tell me about micro-savings options', 'How lenders view my UPI receipts'];
-      } else if (q.includes('season') || q.includes('irregular') || q.includes('gig') || q.includes('मौसम') || q.includes('गिग')) {
-        replyText = language === 'hi'
-          ? `क्रेडनोवा विशेष रूप से गिग कार्यकर्ताओं और कारीगरों को मौसमी गिरावट के दंड से बचाता है! हमारा इंजन 25वें परसेंटाइल पर आपकी आधारभूत स्थायी आय (BSI) को ₹${Math.round(profile.monthlyAverageIncome * 0.75).toLocaleString('en-IN')}/माह मापता है। त्योहारों या मौसम के कारण कमाई में उतार-चढ़ाव होने पर भी स्कोर में कटौती नहीं होती, जब तक आप मासिक शुद्ध बचत बनाए रखते हैं।`
-          : `CredNova explicitly protects gig workers and artisans from seasonality penalties! Our engine measures your Baseline Sustainable Income (BSI) at the 25th percentile (₹${Math.round(profile.monthlyAverageIncome * 0.75).toLocaleString('en-IN')}/mo). When festivals surge or monsoon slows down deliveries, we do not deduct points as long as you maintain your monthly net savings discipline.`;
-        replyTips = language === 'hi'
-          ? ['मेरी ऋण सीमा क्या है?', 'क्रेडिट पासपोर्ट कैसे डाउनलोड करें']
-          : ['What is my loan eligibility limit?', 'How to download my credit passport'];
-      } else if (q.includes('salary') || q.includes('proof') || q.includes('income') || q.includes('सैलरी') || q.includes('आय')) {
-        replyText = language === 'hi'
-          ? `आपको पारंपरिक सैलरी स्लिप की कोई आवश्यकता नहीं है! क्रेडनोवा सीधे आपके यूपीआई क्यूआर मर्चेंट लेजर, डिजिटल वॉलेट रसीदों, डिलीवरी प्लेटफॉर्म भुगतान (ज़ोमैटो/ब्लिंकिट/ओला/डेयरी) और बिल भुगतान स्ट्रीक से आय सत्यापित करता है। यह डिजिटल साक्ष्य हमारे भागीदार सूक्ष्म-ऋण संस्थानों द्वारा 100% मान्य है।`
-          : `You do NOT need formal salary slips! CredNova verifies your earnings directly through your UPI QR merchant ledger, digital wallet receipts, platform partner payouts (Zomato/Blinkit/Ola/Dairy cooperative), and utility bill payment streaks. This verifiable digital footprint carries full weight with our partner micro-finance institutions.`;
-        replyTips = language === 'hi'
-          ? ['आपातकालीन बफर कैसे बनाएं', 'मेरे स्कोर कारक समझाएं']
-          : ['How to build emergency buffer', 'Explain my score factors'];
-      } else {
-        replyText = language === 'hi'
-          ? `बहुत अच्छा प्रश्न! बैंक-विहीन और गिग श्रमिकों के लिए, छोटे नियमित कदम—जैसे मोबाइल बिल 3 दिन पहले भरना और डिजिटल यूपीआई लेनदेन सक्रिय रखना—सीधे आपके वैकल्पिक क्रेडिट स्कोर को बढ़ाते हैं। क्या आप 90-दिवसीय कार्ययोजना देखना चाहेंगे?`
-          : `Great question! For unbanked and gig-economy workers, consistent small actions—like paying mobile recharges 3 days early and keeping digital UPI transactions active—provide immediate mathematical boosts to your alternative credit score. Would you like a step-by-step 90-day checklist?`;
-        replyTips = language === 'hi'
-          ? ['90-दिवसीय कार्ययोजना दिखाएं', 'मुझे कितनी ऋण राशि सिमुलेट करनी चाहिए?']
-          : ['Show 90-day checklist', 'What loan amount should I simulate?'];
-      }
-
-      const aiMsg: Message = {
-        id: `ai-${Date.now()}`,
-        sender: 'ai',
-        text: replyText,
-        tips: replyTips
-      };
-
-      setMessages(prev => [...prev, aiMsg]);
-    } finally {
-      setIsTyping(false);
+      replyTips = language === 'hi'
+        ? ['माइक्रो-बचत विकल्पों के बारे में बताएं', 'ऋणदाता मेरे यूपीआई रिकॉर्ड को कैसे देखते हैं']
+        : ['Tell me about micro-savings options', 'How lenders view my UPI receipts'];
+    } else if (q.includes('season') || q.includes('irregular') || q.includes('gig') || q.includes('मौसम') || q.includes('गिग')) {
+      replyText = language === 'hi'
+        ? `क्रेडनोवा विशेष रूप से गिग कार्यकर्ताओं और कारीगरों को मौसमी गिरावट के दंड से बचाता है! हमारा इंजन 25वें परसेंटाइल पर आपकी आधारभूत स्थायी आय (BSI) को ₹${Math.round(profile.monthlyAverageIncome * 0.75).toLocaleString('en-IN')}/माह मापता है। त्योहारों या मौसम के कारण कमाई में उतार-चढ़ाव होने पर भी स्कोर में कटौती नहीं होती, जब तक आप मासिक शुद्ध बचत बनाए रखते हैं।`
+        : `CredNova explicitly protects gig workers and artisans from seasonality penalties! Our engine measures your Baseline Sustainable Income (BSI) at the 25th percentile (₹${Math.round(profile.monthlyAverageIncome * 0.75).toLocaleString('en-IN')}/mo). When festivals surge or monsoon slows down deliveries, we do not deduct points as long as you maintain your monthly net savings discipline.`;
+      replyTips = language === 'hi'
+        ? ['मेरी ऋण सीमा क्या है?', 'क्रेडिट पासपोर्ट कैसे डाउनलोड करें']
+        : ['What is my loan eligibility limit?', 'How to download my credit passport'];
+    } else if (q.includes('salary') || q.includes('proof') || q.includes('income') || q.includes('सैलरी') || q.includes('आय')) {
+      replyText = language === 'hi'
+        ? `आपको पारंपरिक सैलरी स्लिप की कोई आवश्यकता नहीं है! क्रेडनोवा सीधे आपके यूपीआई क्यूआर मर्चेंट लेजर, डिजिटल वॉलेट रसीदों, डिलीवरी प्लेटफॉर्म भुगतान (ज़ोमैटो/ब्लिंकिट/ओला/डेयरी) और बिल भुगतान स्ट्रीक से आय सत्यापित करता है। यह डिजिटल साक्ष्य हमारे भागीदार सूक्ष्म-ऋण संस्थानों द्वारा 100% मान्य है।`
+        : `You do NOT need formal salary slips! CredNova verifies your earnings directly through your UPI QR merchant ledger, digital wallet receipts, platform partner payouts (Zomato/Blinkit/Ola/Dairy cooperative), and utility bill payment streaks. This verifiable digital footprint carries full weight with our partner micro-finance institutions.`;
+      replyTips = language === 'hi'
+        ? ['आपातकालीन बफर कैसे बनाएं', 'मेरे स्कोर कारक समझाएं']
+        : ['How to build emergency buffer', 'Explain my score factors'];
+    } else {
+      replyText = language === 'hi'
+        ? `बहुत अच्छा प्रश्न! बैंक-विहीन और गिग श्रमिकों के लिए, छोटे नियमित कदम—जैसे मोबाइल बिल 3 दिन पहले भरना और डिजिटल यूपीआई लेनदेन सक्रिय रखना—सीधे आपके वैकल्पिक क्रेडिट स्कोर को बढ़ाते हैं। क्या आप 90-दिवसीय कार्ययोजना देखना चाहेंगे?`
+        : `Great question! For unbanked and gig-economy workers, consistent small actions—like paying mobile recharges 3 days early and keeping digital UPI transactions active—provide immediate mathematical boosts to your alternative credit score. Would you like a step-by-step 90-day checklist?`;
+      replyTips = language === 'hi'
+        ? ['90-दिवसीय कार्ययोजना दिखाएं', 'मुझे कितनी ऋण राशि सिमुलेट करनी चाहिए?']
+        : ['Show 90-day checklist', 'What loan amount should I simulate?'];
     }
+
+    const aiMsg: Message = {
+      id: `ai-${Date.now()}`,
+      sender: 'ai',
+      text: replyText,
+      tips: replyTips
+    };
+
+    setMessages(prev => [...prev, aiMsg]);
+    setIsTyping(false);
   };
 
   return (
