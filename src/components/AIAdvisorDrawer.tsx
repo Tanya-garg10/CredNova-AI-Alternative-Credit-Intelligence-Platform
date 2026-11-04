@@ -97,7 +97,7 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
         : `You are a CredNova AI Financial Coach. User name: ${profile.fullName}, Alternative Credit Score: ${scoring.score} (${scoring.riskCategory}), Monthly Average Income: ₹${profile.monthlyAverageIncome.toLocaleString('en-IN')}, Utility Payment Streak: ${profile.utilityPaymentStreakMonths} months, Emergency Buffer: ${profile.emergencySavingsBufferDays} days. Provide helpful, actionable financial advice in ${language === 'hi' ? 'Hindi and English' : 'English'}.`;
 
       const completion = await openai.chat.completions.create({
-        model: 'featherless-ai/llama-3.3-70b-instruct', // Or available Featherless model
+        model: 'meta-llama/Llama-3.3-70B-Instruct',
         messages: [
           { role: 'system', content: context },
           { role: 'user', content: userQuery }
