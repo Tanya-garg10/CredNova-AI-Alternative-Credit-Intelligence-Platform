@@ -106,6 +106,8 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Quick Profile Dropdown */}
             <div className="relative">
               <select
+                id="header-profile-select"
+                name="header-profile-select"
                 aria-label="Select Borrower Profile"
                 value={activeProfile.id}
                 onChange={(e) => {

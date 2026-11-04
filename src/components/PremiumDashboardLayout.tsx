@@ -115,6 +115,8 @@ export const PremiumDashboardLayout: React.FC<PremiumDashboardLayoutProps> = ({
                 className="w-6 h-6 rounded-full object-cover ring-1 ring-emerald-500"
               />
               <select
+                id="layout-profile-select"
+                name="layout-profile-select"
                 aria-label="Select Borrower Profile"
                 value={activeProfile.id}
                 onChange={(e) => {

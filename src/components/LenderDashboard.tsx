@@ -492,6 +492,8 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
               <input
                 type="text"
+                id="lender-search"
+                name="lender-search"
                 placeholder={t.lender.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -501,6 +503,8 @@ export const LenderDashboard: React.FC<LenderDashboardProps> = ({
 
             {/* Risk Filter */}
             <select
+              id="lender-risk-filter"
+              name="lender-risk-filter"
               aria-label="Filter applicants by risk tier"
               value={selectedRiskFilter}
               onChange={(e) => setSelectedRiskFilter(e.target.value)}

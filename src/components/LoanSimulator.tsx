@@ -116,6 +116,8 @@ export const LoanSimulator: React.FC<LoanSimulatorProps> = ({ profile, scoring, 
             </div>
             <input
               type="range"
+              id="sim-amount"
+              name="sim-amount"
               min={5000}
               max={150000}
               step={2500}
@@ -142,6 +144,8 @@ export const LoanSimulator: React.FC<LoanSimulatorProps> = ({ profile, scoring, 
             </div>
             <input
               type="range"
+              id="sim-tenure"
+              name="sim-tenure"
               min={3}
               max={36}
               step={1}
@@ -169,6 +173,8 @@ export const LoanSimulator: React.FC<LoanSimulatorProps> = ({ profile, scoring, 
             </div>
             <input
               type="range"
+              id="sim-apr"
+              name="sim-apr"
               min={10.0}
               max={28.0}
               step={0.5}

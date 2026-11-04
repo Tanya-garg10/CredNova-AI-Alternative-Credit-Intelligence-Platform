@@ -256,6 +256,8 @@ export const CinematicLandingPage: React.FC<CinematicLandingPageProps> = ({
                 </div>
                 <input
                   type="range"
+                  id="sandbox-income"
+                  name="sandbox-income"
                   min={12000}
                   max={75000}
                   step={1000}
@@ -272,6 +274,8 @@ export const CinematicLandingPage: React.FC<CinematicLandingPageProps> = ({
                 </div>
                 <input
                   type="range"
+                  id="sandbox-utility-streak"
+                  name="sandbox-utility-streak"
                   min={1}
                   max={36}
                   step={1}
@@ -288,6 +292,8 @@ export const CinematicLandingPage: React.FC<CinematicLandingPageProps> = ({
                 </div>
                 <input
                   type="range"
+                  id="sandbox-dti"
+                  name="sandbox-dti"
                   min={5}
                   max={55}
                   step={1}

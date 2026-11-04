@@ -202,7 +202,7 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               </button>
               <label className="px-3 py-1 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 rounded-lg text-xs font-semibold cursor-pointer transition flex items-center space-x-1">
                 <span>{t.evaluator.chooseCsv}</span>
-                <input type="file" accept=".csv" onChange={handleCsvUpload} className="hidden" />
+                <input type="file" id="eval-csv-upload" name="eval-csv-upload" accept=".csv" onChange={handleCsvUpload} className="hidden" />
               </label>
             </div>
           </div>
@@ -228,6 +228,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.fullName}</label>
               <input
                 type="text"
+                id="eval-full-name"
+                name="eval-full-name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -239,6 +241,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.occupation}</label>
               <input
                 type="text"
+                id="eval-occupation"
+                name="eval-occupation"
                 value={primaryOccupation}
                 onChange={(e) => setPrimaryOccupation(e.target.value)}
                 required
@@ -252,6 +256,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.monthlyIncome}</label>
               <input
                 type="number"
+                id="eval-monthly-income"
+                name="eval-monthly-income"
                 value={monthlyIncome}
                 onChange={(e) => setMonthlyIncome(Number(e.target.value))}
                 min={5000}
@@ -264,6 +270,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.utilityStreak}</label>
               <input
                 type="number"
+                id="eval-utility-streak"
+                name="eval-utility-streak"
                 value={utilityStreakMonths}
                 onChange={(e) => setUtilityStreakMonths(Number(e.target.value))}
                 min={0}
@@ -277,6 +285,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.emergencyBuffer}</label>
               <input
                 type="number"
+                id="eval-emergency-buffer"
+                name="eval-emergency-buffer"
                 value={emergencyBufferDays}
                 onChange={(e) => setEmergencyBufferDays(Number(e.target.value))}
                 min={0}
@@ -292,6 +302,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.dtiRatio}</label>
               <input
                 type="number"
+                id="eval-dti-ratio"
+                name="eval-dti-ratio"
                 value={dtiRatio}
                 onChange={(e) => setDtiRatio(Number(e.target.value))}
                 min={0}
@@ -305,6 +317,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.digitalVolume}</label>
               <input
                 type="number"
+                id="eval-digital-volume"
+                name="eval-digital-volume"
                 value={digitalVolumeRatio}
                 onChange={(e) => setDigitalVolumeRatio(Number(e.target.value))}
                 min={0}
@@ -318,6 +332,8 @@ Nov,37000,23100,13900,TRUE,TRUE`;
               <label className="text-slate-300 font-medium block mb-1">{t.evaluator.platformTenure}</label>
               <input
                 type="number"
+                id="eval-platform-tenure"
+                name="eval-platform-tenure"
                 value={monthsOnPlatform}
                 onChange={(e) => setMonthsOnPlatform(Number(e.target.value))}
                 min={1}

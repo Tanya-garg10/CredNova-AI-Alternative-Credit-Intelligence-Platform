@@ -144,6 +144,8 @@ export const AuthAndOnboardingModal: React.FC<AuthAndOnboardingModalProps> = ({
                   <Smartphone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
                     type="tel"
+                    id="auth-phone"
+                    name="auth-phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required
@@ -162,6 +164,8 @@ export const AuthAndOnboardingModal: React.FC<AuthAndOnboardingModalProps> = ({
                     <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                     <input
                       type="text"
+                      id="auth-otp"
+                      name="auth-otp"
                       maxLength={4}
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}

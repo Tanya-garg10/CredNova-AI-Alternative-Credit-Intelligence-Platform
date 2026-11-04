@@ -276,6 +276,8 @@ export const AIAdvisorDrawer: React.FC<AIAdvisorDrawerProps> = ({
         >
           <input
             type="text"
+            id="ai-advisor-input"
+            name="ai-advisor-input"
             placeholder={t.advisor.placeholder}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
